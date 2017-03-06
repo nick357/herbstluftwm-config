@@ -25,6 +25,11 @@ lightdm、fcitx、xfce4-terminal
 Noto Sans S Chinese
 ![image](https://raw.githubusercontent.com/AdamYuan/herbstluftwm-config/master/scrot.jpg)
 
+## 来源
+[介绍-百度贴吧](http://www.tieba.com/p/4257251825?lp=5028&mo_device=1&is_jingpost=0
+https://github.com/AdamYuan/herbstluftwm-config)
+[来源-githhub配置](https://github.com/AdamYuan/herbstluftwm-config)
+
 
 
 
