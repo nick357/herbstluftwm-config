@@ -204,6 +204,12 @@ for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
 done
 #feh --bg-max /usr/share/backgrounds/starwars6.jpg &
 /bin/bash ~/.config/herbstluftwm/startup.sh &
+run=""
+while [ -z "$run" ]; do
+	sleep 1
+	run=$(ps -e | grep dzen)
+	echo "$run"
+done
 pkill trayer
 trayer --edge top --align right --widthtype request --height $DZEN_HEIGHT --transparent true --alpha 1 --tint 0x`echo $DZEN_BGCOLOR|tail -c 7` --margin 405 &
 exit
