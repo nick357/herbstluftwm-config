@@ -9,7 +9,7 @@ export BORDER_WIDTH=1
 export FRAME_GAP=3
 export COLOR_THEME='#00bbff'
 export COLOR_THEME_NORMAL='#000000'
-export TERMINAL='xterm'
+export TERMINAL='xfce4-terminal'
 export TERMINAL_RUN=$TERMINAL' -e'
 export WEB=google-chrome-unstable
 export FILE=thunar
@@ -17,14 +17,13 @@ export FILE=thunar
 hc emit_hook reload
 
 xsetroot -solid $DZEN_BGCOLOR
-xrdb -merge ~/.Xresources
 
 # remove all existing keybindings
 hc keyunbind --all
 
 # keybindings
 # if you have a super key you will be much happier with Mod set to Mod4
-Mod=Mod4    # Use alt as the main modifier
+Mod=Mod1    # Use alt as the main modifier
 #Mod=Mod4   # Use the super key as the main modifier
 
 hc keybind $Mod-Shift-q quit
@@ -32,8 +31,8 @@ hc keybind $Mod-Shift-r reload
 hc keybind $Mod-x close
 hc keybind $Mod-e spawn rofi -show run #dmenu_run -h $DZEN_HEIGHT -fn "Noto Sans S Chinese-12" -nb $DZEN_BGCOLOR -nf '#ffffff' -sb $COLOR_THEME -sf black 
 hc keybind $Mod-q spawn rofi -show window
-hc keybind $Mod-Return spawn $TERMINAL_RUN fish # use your $TERMINAL with xterm as fallback
-hc keybind $Mod-Shift-l spawn slimlock
+hc keybind $Mod-Return spawn $TERMINAL_RUN bash # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-Shift-l spawn light-locker
 
 # basic movement
 # focusing clients
@@ -47,14 +46,14 @@ hc keybind $Mod-k     focus up
 hc keybind $Mod-l     focus right
 
 # moving clients
-hc keybind $Mod-Alt-Left  shift left
-hc keybind $Mod-Alt-Down  shift down
-hc keybind $Mod-Alt-Up    shift up
-hc keybind $Mod-Alt-Right shift right
-hc keybind $Mod-Alt-h     shift left
-hc keybind $Mod-Alt-j     shift down
-hc keybind $Mod-Alt-k     shift up
-hc keybind $Mod-Alt-l     shift right
+hc keybind $Mod-Shift-Left  shift left
+hc keybind $Mod-Shift-Down  shift down
+hc keybind $Mod-Shift-Up    shift up
+hc keybind $Mod-Shift-Right shift right
+hc keybind $Mod-Shift-h     shift left
+hc keybind $Mod-Shift-j     shift down
+hc keybind $Mod-Shift-k     shift up
+hc keybind $Mod-Shift-l     shift right
 
 # splitting frames
 # create an empty frame at the specified direction
@@ -83,16 +82,16 @@ for i in ${!tag_names[@]} ; do
     hc add "${tag_names[$i]}"
     key="${tag_keys[$i]}"
     if ! [ -z "$key" ] ; then
-        hc keybind "$Mod-$key"    use_index "$i"
-       hc keybind "$Mod-Alt-$key" move_index "$i"
+        hc keybind "$Mod-$key" use_index "$i"
+        hc keybind "$Mod-Shift-$key" move_index "$i"
     fi
 done
 
 # cycle through tags
 hc keybind $Mod-period use_index +1 --skip-visible
 hc keybind $Mod-comma  use_index -1 --skip-visible
-hc keybind $Mod-Alt-period and , move_index +1 , use_index +1 --skip-visible 
-hc keybind $Mod-Alt-comma  and , move_index -1 , use_index -1 --skip-visible
+hc keybind $Mod-Shift-period and , move_index +1 , use_index +1 --skip-visible 
+hc keybind $Mod-Shift-comma  and , move_index -1 , use_index -1 --skip-visible
 
 # layouting
 hc keybind $Mod-r and , remove , spawn bash ~/.config/herbstluftwm/tag.sh
@@ -128,8 +127,7 @@ hc keybind XF86Calculator spawn galculator
 hc keybind XF86HomePage spawn $WEB
 
 hc keybind $Mod-v spawn gvim
-hc keybind $Mod-s spawn "emacs"
-hc keybind $Mod-n spawn nmcli_dmenu
+hc keybind $Mod-s spawn emacs
 hc keybind $Mod-t spawn $FILE
 hc keybind $Mod-w spawn $WEB
 
@@ -182,8 +180,7 @@ hc rule focus=on # normally focus new clients
 #hc rule focus=off # normally do not focus new clients
 # give focus to most common terminals
 hc rule class~'(.*[Rr]xvt.*|.*[Tt]erm|Konsole)' focus=on
-
-##hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
+#hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' pseudotile=on
 #hc rule windowtype='_NET_WM_WINDOW_TYPE_SPLASH' manage=off
 hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
@@ -205,15 +202,8 @@ for monitor in $(herbstclient list_monitors | cut -d: -f1) ; do
     # start it on each monitor
     "$panel" $monitor &
 done
-feh --bg-max /usr/share/backgrounds/starwars6.jpg &
+#feh --bg-max /usr/share/backgrounds/starwars6.jpg &
 /bin/bash ~/.config/herbstluftwm/startup.sh &
 pkill trayer
-source ~/.config/init/vars
-run=""
-while [ -z "$run" ]; do
-	sleep 1
-	run=$(ps -e | grep dzen)
-	echo "$run"
-done
 trayer --edge top --align right --widthtype request --height $DZEN_HEIGHT --transparent true --alpha 1 --tint 0x`echo $DZEN_BGCOLOR|tail -c 7` --margin 405 &
 exit

@@ -1,12 +1,9 @@
 #!/bin/bash
-#pkill compton
-#compton --backend glx --vsync opengl-swc  &
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-fcitx &
+# /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 nm-applet &
 pkill xss-lock
-xss-lock -- slimlock &
-pkill indicator-keylo
+xss-lock -- light-locker &
+pkill indicator-keylock
 indicator-keylock &
 pkill volumeicon
 volumeicon 
